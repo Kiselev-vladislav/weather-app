@@ -19,20 +19,18 @@ const CardNoMemo = ({ city, setCityCoord }) => {
       });
     }
   }, [data, setCityCoord]);
-
-  if (!data) return null;
-  const { main, weather, name } = data;
-  const { description, icon } = weather[0];
-  const { temp, humidity, feels_like } = main;
-
-  const handleOnDelete = () => {
+  const handleOnDelete = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     dispatch({
       type: "DELETE_CITY",
       payload: city,
     });
   };
 
-  const handleOnEdit = () => {
+  const handleOnEdit = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     dispatch({
       type: "EDIT_CITY",
       payload: city,
@@ -40,9 +38,42 @@ const CardNoMemo = ({ city, setCityCoord }) => {
     goback();
   };
 
+  const handleOnLinkClick = () => {
+    dispatch({
+      type: "EDIT_CITY_DONE",
+    });
+    goback();
+  };
+  if (data === null) {
+    return (
+      <div className="card">
+        <div className="btns__wrap">
+          <button className="action__btn" onClick={handleOnEdit}>
+            edit
+          </button>
+          <button className="action__btn" onClick={handleOnDelete}>
+            X
+          </button>
+        </div>
+        <div className="card__content">
+          <div className="card__title">{city}</div>
+          <div className="card__description">Not found</div>
+        </div>
+      </div>
+    );
+  }
+  if (!data) return null;
+  const { main, weather, name } = data;
+  const { description, icon } = weather[0];
+  const { temp, humidity, feels_like } = main;
+
   if (isHome) {
     return (
-      <Link to={`/city/${city.toLowerCase()}`} className="card">
+      <Link
+        to={`/city/${city.toLowerCase()}`}
+        onClick={handleOnLinkClick}
+        className="card"
+      >
         <div className="btns__wrap">
           <button className="action__btn" onClick={handleOnEdit}>
             edit

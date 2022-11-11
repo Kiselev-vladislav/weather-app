@@ -1,22 +1,18 @@
 import React from "react";
 
-
-
-
 export class ErorBoundary extends React.Component {
   constructor(props) {
-    super(props)
-    this.state = {error: null}
+    super(props);
+    this.state = { error: null };
   }
   componentDidCatch(error, errorInfo) {
-    console.log("errorInfo:", errorInfo)
-    this.setState({error,})
+    console.log("errorInfo:", errorInfo);
+    this.setState({ error });
   }
   render() {
-    console.log("this.props.children", this.props.children)
-    if(this.state.error){
-      return <div>Component has crashed</div>
+    if (this.state.error) {
+      return <div>Component has crashed</div>;
     }
-    return this.props.children
+    return this.props.children;
   }
 }
